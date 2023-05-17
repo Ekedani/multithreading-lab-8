@@ -6,7 +6,6 @@ public class FoxThread extends Thread {
     private final double[][] result;
     private final int iterations;
     private final FoxSync sync;
-    private int operations = 0;
 
     public FoxThread(double[][] aBlock, double[][] bBlock, int iterations, FoxSync sync) {
         this.aBlock = aBlock;
@@ -29,7 +28,6 @@ public class FoxThread extends Thread {
             for (int j = 0; j < bBlock[0].length; j++) {
                 for (int k = 0; k < bBlock.length; k++) {
                     result[i][j] += aBlock[i][k] * bBlock[k][j];
-                    operations++;
                 }
             }
         }

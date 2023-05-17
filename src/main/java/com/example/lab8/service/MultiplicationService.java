@@ -7,8 +7,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
+
 @Service
 public class MultiplicationService {
+    private final static int BLOCKS_NUM_SQRT = 4;
+
     public double[][] multiplyMatricesFromClient(MultiplicationRequest multiplicationRequest) {
         var a = new Matrix(multiplicationRequest.a);
         var b = new Matrix(multiplicationRequest.b);
@@ -28,7 +31,7 @@ public class MultiplicationService {
     }
 
     private Matrix multiplyMatrices(Matrix a, Matrix b) {
-        var matrixMultiplicator = new FoxMatrixMultiplicator(4);
+        var matrixMultiplicator = new FoxMatrixMultiplicator(BLOCKS_NUM_SQRT);
         return matrixMultiplicator.multiply(a, b);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.lab8.controller;
 
 import com.example.lab8.model.MultiplicationRequest;
+import com.example.lab8.model.MultiplicationResponse;
 import com.example.lab8.service.MultiplicationService;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,12 +15,14 @@ public class MultiplicationController {
     }
 
     @PostMapping("/multiply-client")
-    public String clientMultiplication(@RequestBody MultiplicationRequest multiplicationRequest) {
-        return "ok";
+    public MultiplicationResponse clientMultiplication(@RequestBody MultiplicationRequest multiplicationRequest) {
+        var multiplicationResult = multiplicationService.multiplyMatricesFromClient(multiplicationRequest);
+        return new MultiplicationResponse(multiplicationResult);
     }
 
     @GetMapping("/multiply-server")
-    public double[][] serverMultiplication(@RequestParam("size") int size) {
-        return multiplicationService.multiplyMatricesFromServer(size);
+    public MultiplicationResponse serverMultiplication(@RequestParam("size") int size) {
+        var multiplicationResult = multiplicationService.multiplyMatricesFromServer(size);
+        return new MultiplicationResponse(multiplicationResult);
     }
 }
