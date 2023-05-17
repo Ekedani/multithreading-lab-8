@@ -1,25 +1,25 @@
 package com.example.lab8.controller;
 
+import com.example.lab8.model.MultiplicationRequest;
 import com.example.lab8.service.MultiplicationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
 public class MultiplicationController {
-    @Autowired
-    private MultiplicationService multiplicationService;
+    private final MultiplicationService multiplicationService;
+
+    public MultiplicationController(MultiplicationService multiplicationService) {
+        this.multiplicationService = multiplicationService;
+    }
 
     @PostMapping("/multiply-client")
-    public String clientMultiplication() {
+    public String clientMultiplication(@RequestBody MultiplicationRequest multiplicationRequest) {
         return "ok";
     }
 
     @GetMapping("/multiply-server")
-    public String serverMultiplication() {
-        return "not ok";
+    public double[][] serverMultiplication(@RequestParam("size") int size) {
+        return multiplicationService.multiplyMatricesFromServer(size);
     }
 }

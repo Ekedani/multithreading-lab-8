@@ -70,4 +70,22 @@ public class Matrix {
         }
         return result;
     }
+
+    static public Matrix joinSquareBlockSplit(int numRows, int numCols, double[][][][] blocks) {
+        Matrix matrix = new Matrix(numRows, numCols);
+        final int blockSize = blocks[0][0].length;
+        for (int i = 0; i < blocks.length; i++) {
+            for (int j = 0; j < blocks.length; j++) {
+                double[][] subMatrix = blocks[i][j];
+                int subMatrixStartRow = i * blockSize;
+                int subMatrixStartCol = j * blockSize;
+                for (int k = 0; k < blockSize && k + subMatrixStartRow < numRows; k++) {
+                    for (int l = 0; l < blockSize && l + subMatrixStartCol < numCols; l++) {
+                        matrix.data[k + subMatrixStartRow][l + subMatrixStartCol] = subMatrix[k][l];
+                    }
+                }
+            }
+        }
+        return matrix;
+    }
 }
