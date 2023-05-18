@@ -3,7 +3,9 @@ package com.example.lab8.service;
 import com.example.lab8.model.Matrix;
 import com.example.lab8.model.MultiplicationRequest;
 import com.example.lab8.service.algorithm.FoxMatrixMultiplicator;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,18 +17,29 @@ public class MultiplicationService {
     private final static String DATA_DIRECTORY = "D:\\KPI\\H1'23\\Parallel\\lab-8\\data\\";
 
     public double[][] multiplyMatricesFromClient(MultiplicationRequest multiplicationRequest) {
-        var a = new Matrix(multiplicationRequest.a);
-        var b = new Matrix(multiplicationRequest.b);
-        var c = multiplyMatrices(a, b);
-        return c.data;
+        try {
+            var a = new Matrix(multiplicationRequest.a);
+            var b = new Matrix(multiplicationRequest.b);
+            var c = multiplyMatrices(a, b);
+            return c.data;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
     public double[][] multiplyMatricesFromServer(String matrixSize) {
-        var size = Integer.parseInt(matrixSize);
-        var a = readMatrixFromFile(size);
-        var b = readMatrixFromFile(size);
-        var c = multiplyMatrices(a, b);
-        return c.data;
+        try {
+            var size = Integer.parseInt(matrixSize);
+            if (size <= 0) {
+                throw new Exception("Size must be positive");
+            }
+            var a = readMatrixFromFile(size);
+            var b = readMatrixFromFile(size);
+            var c = multiplyMatrices(a, b);
+            return c.data;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
     private Matrix readMatrixFromFile(int matrixSize) {
@@ -45,7 +58,7 @@ public class MultiplicationService {
             }
             return new Matrix(matrix);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 
