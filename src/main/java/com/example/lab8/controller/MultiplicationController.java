@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "*")
 public class MultiplicationController {
     private final MultiplicationService multiplicationService;
 
@@ -21,7 +22,7 @@ public class MultiplicationController {
     }
 
     @GetMapping("/multiply-server")
-    public MultiplicationResponse serverMultiplication(@RequestParam("size") int size) {
+    public MultiplicationResponse serverMultiplication(@RequestParam("size") String size) {
         var multiplicationResult = multiplicationService.multiplyMatricesFromServer(size);
         return new MultiplicationResponse(multiplicationResult);
     }

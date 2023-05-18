@@ -5,8 +5,6 @@ import com.example.lab8.model.MultiplicationRequest;
 import com.example.lab8.service.algorithm.FoxMatrixMultiplicator;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-
 
 @Service
 public class MultiplicationService {
@@ -19,9 +17,10 @@ public class MultiplicationService {
         return c.data;
     }
 
-    public double[][] multiplyMatricesFromServer(int matrixSize) {
-        var a = readMatrixFromFile(matrixSize);
-        var b = readMatrixFromFile(matrixSize);
+    public double[][] multiplyMatricesFromServer(String matrixSize) {
+        var size = Integer.parseInt(matrixSize);
+        var a = readMatrixFromFile(size);
+        var b = readMatrixFromFile(size);
         var c = multiplyMatrices(a, b);
         return c.data;
     }

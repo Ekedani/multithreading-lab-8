@@ -28,21 +28,12 @@ public class Matrix {
     }
 
     public int getNumCols() {
-        return this.numCols;
-    }
-
-    public void generateRandomMatrix(double low, double high) {
-        Random random = new Random();
-        for (int i = 0; i < numRows; i++) {
-            for (int j = 0; j < numCols; j++) {
-                data[i][j] = Math.floor(low + (high - low) * random.nextDouble());
-            }
-        }
+        return numCols;
     }
 
     public double[][][][] getSquareBlockSplit(int blocksNumSqrt) {
-        double[][][][] matrixBlocks = new double[blocksNumSqrt][blocksNumSqrt][this.numRows][this.numCols];
-        final int blockSize = Math.ceilDiv(this.numRows, blocksNumSqrt);
+        double[][][][] matrixBlocks = new double[blocksNumSqrt][blocksNumSqrt][numRows][numCols];
+        final int blockSize = Math.ceilDiv(numRows, blocksNumSqrt);
         for (int i = 0; i < blocksNumSqrt; i++) {
             for (int j = 0; j < blocksNumSqrt; j++) {
                 matrixBlocks[i][j] = getSquareBlock(i * blockSize, j * blockSize, blockSize);
@@ -52,7 +43,7 @@ public class Matrix {
     }
 
     public double[][][][] getSquareBlockSplit(int blocksNumSqrt, int blockSize) {
-        double[][][][] matrixBlocks = new double[blocksNumSqrt][blocksNumSqrt][this.numRows][this.numCols];
+        double[][][][] matrixBlocks = new double[blocksNumSqrt][blocksNumSqrt][numRows][numCols];
         for (int i = 0; i < blocksNumSqrt; i++) {
             for (int j = 0; j < blocksNumSqrt; j++) {
                 matrixBlocks[i][j] = getSquareBlock(i * blockSize, j * blockSize, blockSize);
@@ -65,7 +56,7 @@ public class Matrix {
         double[][] result = new double[size][size];
         for (int i = 0; i < size && (i + startRow < numRows); i++) {
             for (int j = 0; j < size && (j + startCol < numCols); j++) {
-                result[i][j] = this.data[i + startRow][j + startCol];
+                result[i][j] = data[i + startRow][j + startCol];
             }
         }
         return result;
@@ -87,5 +78,22 @@ public class Matrix {
             }
         }
         return matrix;
+    }
+
+    public void generateRandomMatrix(double low, double high) {
+        Random random = new Random();
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numCols; j++) {
+                data[i][j] = Math.floor(low + (high - low) * random.nextDouble());
+            }
+        }
+    }
+
+    public void generateConstantMatrix(double constant) {
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numCols; j++) {
+                data[i][j] = constant;
+            }
+        }
     }
 }
