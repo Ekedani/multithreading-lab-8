@@ -5,11 +5,13 @@ import com.example.lab8.model.MultiplicationRequest;
 import com.example.lab8.service.algorithm.FoxMatrixMultiplicator;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 
 @Service
 public class MultiplicationService {
@@ -42,6 +44,17 @@ public class MultiplicationService {
         }
     }
 
+    public double[][] multiplyFileMatricesFromClient(MultipartFile fileA, MultipartFile fileB) {
+        try {
+            var a = convertMultipartFileToMatrix(fileA);
+            var b = convertMultipartFileToMatrix(fileB);
+            var c = multiplyMatrices(a, b);
+            return c.data;
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
     private Matrix readMatrixFromFile(int matrixSize) {
         try {
             var file = new File(DATA_DIRECTORY + matrixSize + ".csv");
@@ -65,5 +78,20 @@ public class MultiplicationService {
     private Matrix multiplyMatrices(Matrix a, Matrix b) {
         var matrixMultiplicator = new FoxMatrixMultiplicator(BLOCKS_NUM_SQRT);
         return matrixMultiplicator.multiply(a, b);
+    }
+
+    private Matrix convertMultipartFileToMatrix(MultipartFile file) throws IOException {
+        String content = new String(file.getBytes());
+        String[] rows = content.split("\n");
+        int numRows = rows.length;
+        int numCols = rows[0].split("\\s+").length;
+        double[][] matrix = new double[numRows][numCols];
+        for (int i = 0; i < numRows; i++) {
+            String[] values = rows[i].split("\\s+");
+            for (int j = 0; j < numCols; j++) {
+                matrix[i][j] = Double.parseDouble(values[j]);
+            }
+        }
+        return new Matrix(matrix);
     }
 }
