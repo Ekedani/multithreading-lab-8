@@ -38,6 +38,35 @@ async function multiplyClientMatricesOnServer(event) {
     }
 }
 
+async function multiplyClientFilesOnServer(event) {
+    event.preventDefault();
+    const formData = new FormData();
+
+    formData.append('a', JSON.stringify(document.getElementById('a').value));
+    formData.append('b', JSON.stringify(document.getElementById('b').value));
+
+    try {
+        const start = new Date().getTime() / 1000
+        const response = await fetch('http://localhost:8080/api/multiply-client-files', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: formData
+        });
+        const result = await response.json();
+        const end = new Date().getTime() / 1000
+        if (result.error) {
+            throw new Error(result.error);
+        }
+        document.getElementById('c').value = convertMatrixToText(result.c);
+        document.getElementById('time').innerHTML = `${end - start} s`;
+    } catch (e) {
+        alert(e.message);
+    }
+}
+
 async function multiplyServerMatricesOnServer(event) {
     event.preventDefault();
     const size = document.getElementById('size').value;
