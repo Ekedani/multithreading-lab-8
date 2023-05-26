@@ -33,11 +33,11 @@ public class MultiplicationController {
     }
 
     @PostMapping(value = "/multiply-client-files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public MultiplicationResponse clientFileMultiplication(MultipartHttpServletRequest request) {
-        MultiValueMap<String, MultipartFile> files = request.getMultiFileMap();
-        MultipartFile fileA = files.getFirst("a");
-        MultipartFile fileB = files.getFirst("b");
-        var multiplicationResult = multiplicationService.multiplyFileMatricesFromClient(fileA, fileB);
+    public MultiplicationResponse clientFileMultiplication(
+            @RequestParam("a") MultipartFile a,
+            @RequestParam("b") MultipartFile b
+    ) {
+        var multiplicationResult = multiplicationService.multiplyFileMatricesFromClient(a, b);
         return new MultiplicationResponse(multiplicationResult);
     }
 }

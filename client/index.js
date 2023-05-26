@@ -1,4 +1,5 @@
 document.getElementById('multiply-client').addEventListener('click', multiplyClientMatricesOnServer);
+document.getElementById('multiply-client-files').addEventListener('click', multiplyClientFilesOnServer);
 document.getElementById('multiply-server').addEventListener('click', multiplyServerMatricesOnServer);
 document.getElementById('run-experiment').addEventListener('click', runExperiment);
 
@@ -40,20 +41,15 @@ async function multiplyClientMatricesOnServer(event) {
 
 async function multiplyClientFilesOnServer(event) {
     event.preventDefault();
-    const formData = new FormData();
-
-    formData.append('a', JSON.stringify(document.getElementById('a').value));
-    formData.append('b', JSON.stringify(document.getElementById('b').value));
-
+    const formData = new FormData(document.getElementById('file-upload-form'));
     try {
         const start = new Date().getTime() / 1000
         const response = await fetch('http://localhost:8080/api/multiply-client-files', {
             method: 'POST',
             headers: {
-                'Content-Type': 'multipart/form-data',
                 'Access-Control-Allow-Origin': '*'
             },
-            body: formData
+            body: formData,
         });
         const result = await response.json();
         const end = new Date().getTime() / 1000

@@ -49,6 +49,18 @@
                 <button id="multiply-server" type="submit" class="btn btn-dark mt-3">Multiply from server</button>
             </div>
         </form>
+        <form id="file-upload-form" class="border border-dark mt-3 p-3" enctype="multipart/form-data">
+            <h2 class="text-center">Files on client</h2>
+            <div class="form-group">
+                <label for="a-file">A</label>
+                <input type="file" class="form-control-file" id="a-file" name="a" accept=".txt">
+            </div>
+            <div class="form-group">
+                <label for="b-file">B</label>
+                <input type="file" class="form-control-file" id="b-file" name="b" accept=".txt">
+            </div>
+            <button id="multiply-client-files" type="submit" class="btn btn-dark">Multiply files from client</button>
+        </form>
     </div>
     <div class="result px-3 border mt-3 border-dark">
         <h2 class="text-center">Result</h2>

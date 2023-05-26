@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 
 @Service
 public class MultiplicationService {
@@ -84,10 +85,10 @@ public class MultiplicationService {
         String content = new String(file.getBytes());
         String[] rows = content.split("\n");
         int numRows = rows.length;
-        int numCols = rows[0].split("\\s+").length;
+        int numCols = rows[0].trim().split("\\s+").length;
         double[][] matrix = new double[numRows][numCols];
         for (int i = 0; i < numRows; i++) {
-            String[] values = rows[i].split("\\s+");
+            String[] values = rows[i].trim().split("\\s+");
             for (int j = 0; j < numCols; j++) {
                 matrix[i][j] = Double.parseDouble(values[j]);
             }
